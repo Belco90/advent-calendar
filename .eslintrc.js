@@ -26,12 +26,6 @@ module.exports = {
 			},
 		],
 		'@typescript-eslint/no-floating-promises': 'error',
-		'@typescript-eslint/consistent-type-exports': [
-			'error',
-			{
-				fixMixedExportsWithInlineTypeSpecifier: true,
-			},
-		],
 		'@typescript-eslint/consistent-type-imports': [
 			'error',
 			{
