@@ -16,6 +16,7 @@
 		"lint": "next lint",
 		"lint:fix": "pnpm lint -- --fix",
 		"format": "prettier --write --ignore-unknown src \"*.{json,js,md}\"",
+		"postinstall": "panda codegen",
 		"prepare": "is-ci || husky install"
 	},
 	"dependencies": {
