@@ -2,23 +2,40 @@
   "name": "advent-calendar",
   "version": "0.1.0",
   "private": true,
+  "author": "Mario Beltrán",
+  "engines": {
+    "pnpm": "^8.10.0"
+  },
+  "packageManager": "pnpm@8.10.4",
   "scripts": {
+    "start": "pnpm dev",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "serve": "next start",
+    "type-check": "tsc --noEmit",
+    "lint": "next lint",
+    "lint:fix": "pnpm lint -- --fix",
+    "format": "prettier --write --ignore-unknown src \"*.{json,js,md}\"",
+    "prepare": "is-ci || husky install"
   },
   "dependencies": {
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "next": "14.0.2"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.0.2"
+    "@types/node": "^18.18.9",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "eslint": "^8.53.0",
+    "eslint-config-next": "14.0.2",
+    "eslint-config-prettier": "^9.0.0",
+    "husky": "^8.0.3",
+    "is-ci": "^3.0.1",
+    "lint-staged": "^15.1.0",
+    "prettier": "3.1.0",
+    "typescript": "^5.2.2"
   }
 }
