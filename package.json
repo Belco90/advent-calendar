@@ -20,6 +20,8 @@
 		"prepare": "is-ci || husky install"
 	},
 	"dependencies": {
+		"@supabase/auth-helpers-nextjs": "^0.8.7",
+		"@supabase/supabase-js": "^2.38.4",
 		"next": "14.0.2",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
