@@ -16,6 +16,7 @@
 		"lint": "next lint",
 		"lint:fix": "pnpm lint -- --fix",
 		"format": "prettier --write --ignore-unknown src \"*.{json,js,md}\"",
+		"gen:api-types": "supabase gen types typescript --project-id hwmlbmxtdscdfwaqjhgn > src/lib/database-generated.types.ts",
 		"postinstall": "panda codegen",
 		"prepare": "is-ci || husky install"
 	},
@@ -40,6 +41,8 @@
 		"is-ci": "^3.0.1",
 		"lint-staged": "^15.1.0",
 		"prettier": "3.1.0",
+		"supabase": "^1.112.0",
+		"type-fest": "^4.7.1",
 		"typescript": "^5.2.2"
 	}
 }

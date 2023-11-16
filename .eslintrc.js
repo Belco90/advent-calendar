@@ -15,6 +15,13 @@ module.exports = {
 	rules: {
 		// General
 		'no-console': 'warn',
+		'no-restricted-imports': [
+			'error',
+			{
+				name: '@/lib/database-generated.types',
+				message: 'Please import from `@/lib/database.types` instead.',
+			},
+		],
 
 		// TypeScript
 		'@typescript-eslint/prefer-nullish-coalescing': 'off',
