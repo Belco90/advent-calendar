@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { type ReactNode } from 'react'
 
+import LayoutUI from './LayoutUI'
+
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export const metadata: Metadata = {
@@ -13,7 +15,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="en" className={`${inter.variable}`} suppressHydrationWarning>
-			<body>{children}</body>
+			<body>
+				<LayoutUI>{children}</LayoutUI>
+			</body>
 		</html>
 	)
 }

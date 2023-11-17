@@ -13,7 +13,12 @@ export async function middleware(req: NextRequest) {
 	const { data } = await supabase.auth.getSession()
 
 	const isUserAuth = !!data.session
-	const isLoginUrl = req.nextUrl.pathname === LOGIN_URL
+	const nextUrl = req.nextUrl.pathname
+	const isLoginUrl = nextUrl === LOGIN_URL
+
+	if (nextUrl.endsWith('.map')) {
+		return res
+	}
 
 	if (isUserAuth && isLoginUrl) {
 		return NextResponse.redirect(new URL('/', req.url))
@@ -24,4 +29,17 @@ export async function middleware(req: NextRequest) {
 	}
 
 	return res
+}
+
+export const config = {
+	matcher: [
+		/*
+		 * Match all request paths except for the ones starting with:
+		 * - api (API routes)
+		 * - _next/static (static files)
+		 * - _next/image (image optimization files)
+		 * - favicon.ico (favicon file)
+		 */
+		'/((?!api|_next/static|_next/image|favicon.ico).*)',
+	],
 }
