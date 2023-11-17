@@ -1,6 +1,9 @@
 'use client'
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import {
+	createClientComponentClient,
+	type User,
+} from '@supabase/auth-helpers-nextjs'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -8,16 +11,13 @@ import { type Database } from '@/lib/database.types'
 
 const ToggleUserAuth = () => {
 	const [isLoading, setIsLoading] = useState(true)
-	const [isAuth, setIsAuth] = useState(false)
+	const [user, setUser] = useState<User | null>(null)
 	const supabase = createClientComponentClient<Database>()
 
 	useEffect(() => {
 		const getData = async () => {
-			const { data } = await supabase.auth.getSession()
-
-			if (data.session?.user) {
-				setIsAuth(true)
-			}
+			const { data } = await supabase.auth.getUser()
+			setUser(data.user)
 
 			setIsLoading(false)
 		}
@@ -27,6 +27,8 @@ const ToggleUserAuth = () => {
 	if (isLoading) {
 		return null
 	}
+
+	const isAuth = !!user
 
 	return (
 		<Link href={isAuth ? '/salir' : '/acceder'}>
