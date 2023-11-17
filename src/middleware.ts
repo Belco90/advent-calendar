@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server'
 
 import type { Database } from '@/lib/database.types'
 
-const LOGIN_URL = '/acceso' as const
+const LOGIN_URL = '/acceder' as const
 
 /** https://supabase.com/docs/guides/auth/auth-helpers/nextjs?language=ts#managing-session-with-middleware */
 export async function middleware(req: NextRequest) {
@@ -15,14 +15,11 @@ export async function middleware(req: NextRequest) {
 	const isUserAuth = !!data.session
 	const isLoginUrl = req.nextUrl.pathname === LOGIN_URL
 
-	if (isUserAuth) {
-		if (isLoginUrl) {
-			return NextResponse.redirect(new URL('/', req.url))
-		}
-		return res
+	if (isUserAuth && isLoginUrl) {
+		return NextResponse.redirect(new URL('/', req.url))
 	}
 
-	if (!isLoginUrl) {
+	if (!isUserAuth && !isLoginUrl) {
 		return NextResponse.redirect(new URL(LOGIN_URL, req.url))
 	}
 
