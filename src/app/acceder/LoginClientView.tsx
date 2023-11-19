@@ -33,7 +33,8 @@ const LoginClientView: FC = () => {
 				onChange={(e) => setPassword(e.target.value)}
 				value={password}
 			/>
-			<button onClick={void handleSignIn}>Sign in</button>
+			{/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+			<button onClick={handleSignIn}>Sign in</button>
 		</>
 	)
 }
