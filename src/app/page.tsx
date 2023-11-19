@@ -12,7 +12,7 @@ async function HomePage() {
 	const { data: compartments } = await supabase.from('compartment').select()
 
 	return (
-		<main>
+		<>
 			<h1>Compartments</h1>
 			<Grid columns={3} gap="2">
 				{compartments?.map((compartment) => (
@@ -22,7 +22,7 @@ async function HomePage() {
 					</div>
 				))}
 			</Grid>
-		</main>
+		</>
 	)
 }
 
