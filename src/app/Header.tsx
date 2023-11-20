@@ -15,7 +15,7 @@ const Header: FC = () => {
 				<Flex width="full" align="center">
 					<Box
 						fontWeight="bold"
-						fontSize="2xl"
+						fontSize={{ base: 'xl', md: '2xl' }}
 						fontFamily="heading"
 						bgSize="100% 0.2em"
 						bgPosition="0 80%"

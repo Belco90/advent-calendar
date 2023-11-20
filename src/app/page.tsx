@@ -1,9 +1,10 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 
+import CompartmentBox from '@/components/CompartmentBox'
 import { type Database } from '@/lib/database.types'
 import { type Compartment } from '@/models'
-import { Grid } from '@/styled-system/jsx'
+import { Container, Grid } from '@/styled-system/jsx'
 
 const getCompartments = async (): Promise<Array<Compartment> | null> => {
 	const cookieStore = cookies()
@@ -43,17 +44,14 @@ async function HomePage() {
 	) as Array<Compartment>
 
 	return (
-		<>
-			<h2>Compartments</h2>
-			<Grid columns={3} gap="2">
+		<Container py="8" maxWidth="breakpoint-md">
+			{/* TODO: extract this into smaller components, including client */}
+			<Grid columns={3} gap="10">
 				{shuffledCompartments.map((compartment) => (
-					<div key={compartment.id}>
-						<div>{compartment.day}</div>
-						<code>{JSON.stringify(compartment, null, 2)}</code>
-					</div>
+					<CompartmentBox key={compartment.id} compartment={compartment} />
 				))}
 			</Grid>
-		</>
+		</Container>
 	)
 }
 
