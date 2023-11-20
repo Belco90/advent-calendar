@@ -21,7 +21,7 @@ const Header: FC = () => {
 						bgPosition="0 80%"
 						bgRepeat="no-repeat"
 					>
-						Calendario Adviento 2023
+						<h1>Calendario Adviento 2023</h1>
 					</Box>
 
 					<Spacer />

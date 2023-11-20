@@ -26,6 +26,11 @@ const getCompartments = async (): Promise<Array<Compartment> | null> => {
 	})
 }
 
+const SHUFFLED_COMPARTMENTS_DAYS = [
+	14, 6, 5, 21, 16, 11, 15, 10, 18, 23, 9, 7, 22, 8, 2, 4, 3, 17, 12, 13, 24,
+	20, 1, 19,
+] as const
+
 async function HomePage() {
 	const compartments = await getCompartments()
 
@@ -33,11 +38,15 @@ async function HomePage() {
 		return <div>No data!</div>
 	}
 
+	const shuffledCompartments = SHUFFLED_COMPARTMENTS_DAYS.map((shuffledDay) =>
+		compartments.find(({ day }) => shuffledDay === day),
+	) as Array<Compartment>
+
 	return (
 		<>
-			<h1>Compartments</h1>
+			<h2>Compartments</h2>
 			<Grid columns={3} gap="2">
-				{compartments.map((compartment) => (
+				{shuffledCompartments.map((compartment) => (
 					<div key={compartment.id}>
 						<div>{compartment.day}</div>
 						<code>{JSON.stringify(compartment, null, 2)}</code>
