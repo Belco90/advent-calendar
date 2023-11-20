@@ -1,17 +1,29 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 
-import { type CompartmentTable, type Database } from '@/lib/database.types'
+import { type Database } from '@/lib/database.types'
+import { type Compartment } from '@/models'
 import { Grid } from '@/styled-system/jsx'
 
-const getCompartments = async (): Promise<Array<CompartmentTable> | null> => {
+const getCompartments = async (): Promise<Array<Compartment> | null> => {
 	const cookieStore = cookies()
 	const supabase = createServerComponentClient<Database>({
 		cookies: () => cookieStore,
 	})
 	const { data } = await supabase.from('compartment').select()
 
-	return data
+	if (!data) {
+		return data
+	}
+
+	return data.map((compartment) => {
+		if (!compartment.openedAt) {
+			// Exclude fields that shouldn't be available if not opened.
+			const { id, createdAt, day, isLocked } = compartment
+			return { openedAt: null, id, day, isLocked, createdAt }
+		}
+		return compartment
+	})
 }
 
 async function HomePage() {
@@ -27,10 +39,8 @@ async function HomePage() {
 			<Grid columns={3} gap="2">
 				{compartments.map((compartment) => (
 					<div key={compartment.id}>
-						<div>
-							{compartment.title} ({compartment.happenedAt})
-						</div>
-						<img src={compartment.pictureFK} alt="" />
+						<div>{compartment.day}</div>
+						<code>{JSON.stringify(compartment, null, 2)}</code>
 					</div>
 				))}
 			</Grid>
