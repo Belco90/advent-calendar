@@ -1,12 +1,16 @@
 'use client'
 
 import { type FC } from 'react'
+import { FaQuestionCircle, FaLock } from 'react-icons/fa'
 
 import { type Compartment } from '@/models'
 import { css } from '@/styled-system/css'
 import { Box } from '@/styled-system/jsx'
 
 const CompartmentBox: FC<{ compartment: Compartment }> = ({ compartment }) => {
+	const isLocked = compartment.isLocked
+	const isOpened = !!compartment.openedAt
+
 	return (
 		<button
 			type="button"
@@ -30,7 +34,17 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({ compartment }) => {
 				borderWidth="2px"
 				aspectRatio="square"
 			>
-				<Box fontSize="2xl" fontWeight="bold">
+				{!isLocked && !isOpened && (
+					<Box fontSize="3xl">
+						<FaQuestionCircle />
+					</Box>
+				)}
+				{isLocked && (
+					<Box fontSize="3xl">
+						<FaLock />
+					</Box>
+				)}
+				<Box position="absolute" bottom="0.5" right="2" fontSize="lg">
 					{compartment.day}
 				</Box>
 			</Box>

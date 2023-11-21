@@ -45,7 +45,6 @@ async function HomePage() {
 
 	return (
 		<Container py="8" maxWidth="breakpoint-md">
-			{/* TODO: extract this into smaller components, including client */}
 			<Grid columns={3} gap="10">
 				{shuffledCompartments.map((compartment) => (
 					<CompartmentBox key={compartment.id} compartment={compartment} />
