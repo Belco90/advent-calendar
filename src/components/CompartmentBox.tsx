@@ -1,15 +1,17 @@
 'use client'
 
+import Image from 'next/image'
 import { type FC } from 'react'
 import { FaQuestionCircle, FaLock } from 'react-icons/fa'
 
 import { type Compartment } from '@/models'
 import { css } from '@/styled-system/css'
-import { Box } from '@/styled-system/jsx'
+import { panda, Box } from '@/styled-system/jsx'
 
 const CompartmentBox: FC<{ compartment: Compartment }> = ({ compartment }) => {
 	const isLocked = compartment.isLocked
 	const isOpened = !!compartment.openedAt
+	const shouldShowPicture = !isLocked && isOpened
 
 	return (
 		<button
@@ -25,6 +27,7 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({ compartment }) => {
 		>
 			<Box
 				display="flex"
+				position="relative"
 				alignItems="center"
 				justifyContent="center"
 				height="full"
@@ -34,18 +37,29 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({ compartment }) => {
 				borderWidth="2px"
 				aspectRatio="square"
 			>
-				{!isLocked && !isOpened && (
+				{!shouldShowPicture && (
 					<Box fontSize="3xl">
-						<FaQuestionCircle />
+						{isLocked ? <FaLock /> : <FaQuestionCircle />}
 					</Box>
 				)}
-				{isLocked && (
-					<Box fontSize="3xl">
-						<FaLock />
-					</Box>
+				{shouldShowPicture && (
+					<Image
+						src={compartment.pictureFK}
+						alt=""
+						fill
+						className={css({ objectFit: 'cover' })}
+					/>
 				)}
-				<Box position="absolute" bottom="0.5" right="2" fontSize="lg">
-					{compartment.day}
+				<Box position="absolute" bottom="0" right="1">
+					<panda.span
+						fontSize={{ base: 'xl', md: '3xl' }}
+						fontWeight="bold"
+						color="green.500"
+						textStyle="box-number"
+						shadowColor="blue.500"
+					>
+						{compartment.day}
+					</panda.span>
 				</Box>
 			</Box>
 		</button>

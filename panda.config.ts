@@ -1,5 +1,7 @@
 import { defineConfig } from '@pandacss/dev'
 
+import { textStyles } from '@/theme/text-styles'
+
 export default defineConfig({
 	// Whether to use css reset
 	preflight: true,
@@ -25,6 +27,7 @@ export default defineConfig({
 	// Useful for theme customization
 	theme: {
 		extend: {
+			textStyles,
 			tokens: {
 				fonts: {
 					heading: { value: 'var(--font-inter)' },
