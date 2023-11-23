@@ -30,6 +30,10 @@ export async function POST(
 		)
 	}
 
+	if (compartment.isLocked) {
+		return NextResponse.json({ error: 'Compartment locked.' }, { status: 403 })
+	}
+
 	// TODO: check if the day is allowed to be opened
 	// TODO: open the compartment
 
