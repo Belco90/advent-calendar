@@ -4,6 +4,7 @@ import MockDate from 'mockdate'
 import { cookies } from 'next/headers'
 import { type NextRequest, NextResponse } from 'next/server'
 
+import { API_ERRORS } from '@/api-errors'
 import { type Database } from '@/lib/database.types'
 
 function getIsCompartmentDayAllowed(day: number): boolean {
@@ -38,23 +39,41 @@ export async function POST(
 		.single()
 
 	if (error) {
-		return NextResponse.json({ error: error.message }, { status: 500 })
+		return NextResponse.json(
+			{
+				errorMessage: error.message,
+				errorCode: API_ERRORS.COMPARTMENT_DB_EXCEPTION,
+			},
+			{ status: 500 },
+		)
 	}
 
 	if (!compartment) {
 		return NextResponse.json(
-			{ error: `Compartment with id "${id}" not found.` },
+			{
+				errorMessage: `Compartment with id "${id}" not found.`,
+				errorCode: API_ERRORS.COMPARTMENT_NOT_FOUND,
+			},
 			{ status: 404 },
 		)
 	}
 
 	if (compartment.isLocked) {
-		return NextResponse.json({ error: 'Compartment locked.' }, { status: 403 })
+		return NextResponse.json(
+			{
+				errorMessage: 'Compartment locked.',
+				errorCode: API_ERRORS.COMPARTMENT_LOCKED,
+			},
+			{ status: 403 },
+		)
 	}
 
 	if (!getIsCompartmentDayAllowed(compartment.day)) {
 		return NextResponse.json(
-			{ error: 'Compartment day not allowed.' },
+			{
+				errorMessage: 'Compartment day not allowed.',
+				errorCode: API_ERRORS.COMPARTMENT_DAY_NOT_ALLOWED,
+			},
 			{ status: 403 },
 		)
 	}
