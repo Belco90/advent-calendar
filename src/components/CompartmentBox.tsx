@@ -9,15 +9,32 @@ import { css } from '@/styled-system/css'
 import { panda, Box } from '@/styled-system/jsx'
 
 const CompartmentBox: FC<{ compartment: Compartment }> = ({ compartment }) => {
-	const isLocked = compartment.isLocked
-	const isOpened = !!compartment.openedAt
+	const { isLocked, isOpened } = compartment
 	const shouldShowPicture = !isLocked && isOpened
+
+	const handleOpenCompartment = async () => {
+		try {
+			const response = await fetch(`api/compartment/${compartment.id}/open`, {
+				method: 'POST',
+			})
+
+			if (response.ok) {
+				console.log('-----> SUCCESS')
+				// TODO: get updated compartment?
+				// TODO: refresh path?
+			} else {
+				throw response
+			}
+		} catch (error) {
+			console.log('ERROR', error)
+		}
+	}
 
 	return (
 		<button
 			type="button"
 			key={compartment.id}
-			onClick={() => alert(`Compartment from day ${compartment.day}`)}
+			onClick={handleOpenCompartment}
 			className={css({
 				'&:nth-child(1n)': { rotate: '-5deg' },
 				'&:nth-child(2n)': { rotate: '12deg' },

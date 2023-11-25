@@ -5,7 +5,7 @@ import { cookies } from 'next/headers'
 import { type NextRequest, NextResponse } from 'next/server'
 
 import { API_ERRORS } from '@/api-errors'
-import { type Database } from '@/lib/database.types'
+import { type CompartmentTable, type Database } from '@/lib/database.types'
 import { type Compartment } from '@/models'
 
 function getIsCompartmentDayAllowed(day: number): boolean {
@@ -68,11 +68,14 @@ export async function POST(
 		)
 	}
 
-	if (compartment.openedAt) {
-		return NextResponse.json({
-			errorMessage: 'Compartment already open',
-			errorCode: API_ERRORS.COMPARTMENT_ALREADY_OPEN,
-		})
+	if (compartment.isOpened) {
+		return NextResponse.json(
+			{
+				errorMessage: 'Compartment already open',
+				errorCode: API_ERRORS.COMPARTMENT_ALREADY_OPEN,
+			},
+			{ status: 500 },
+		)
 	}
 
 	if (compartment.isLocked) {
@@ -95,8 +98,31 @@ export async function POST(
 		)
 	}
 
-	// TODO: open the compartment
+	const patchData: Partial<CompartmentTable> = { isOpened: true }
+	const { error: updateError, status: updateStatus } = await supabase
+		.from('compartment')
+		.update(patchData)
+		.eq('id', id)
 
-	// FIXME: send updated compartment
-	return NextResponse.json({ compartment: compartment })
+	if (updateError) {
+		return NextResponse.json(
+			{
+				errorMessage: updateError.message,
+				errorCode: API_ERRORS.COMPARTMENT_DB_EXCEPTION,
+			},
+			{ status: 500 },
+		)
+	}
+
+	if (updateStatus >= 400) {
+		return NextResponse.json(
+			{
+				errorMessage: 'Something went wrong',
+				errorCode: API_ERRORS.COMPARTMENT_DB_EXCEPTION,
+			},
+			{ status: 500 },
+		)
+	}
+
+	return NextResponse.json({ compartment: { ...compartment, ...patchData } })
 }

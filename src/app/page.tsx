@@ -18,10 +18,10 @@ const getCompartments = async (): Promise<Array<Compartment> | null> => {
 	}
 
 	return data.map((compartment) => {
-		if (!compartment.openedAt) {
+		if (!compartment.isOpened) {
 			// Exclude fields that shouldn't be available if not opened.
 			const { id, createdAt, day, isLocked } = compartment
-			return { openedAt: null, id, day, isLocked, createdAt }
+			return { isOpened: false, id, day, isLocked, createdAt }
 		}
 		return compartment
 	})

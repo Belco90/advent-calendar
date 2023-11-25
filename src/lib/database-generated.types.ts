@@ -16,7 +16,7 @@ export interface Database {
 					happenedAt: string
 					id: number
 					isLocked: boolean
-					openedAt: string | null
+					isOpened: boolean
 					pictureFK: string
 					pictureMeta: Json
 					title: string
@@ -27,7 +27,7 @@ export interface Database {
 					happenedAt: string
 					id?: number
 					isLocked?: boolean
-					openedAt?: string | null
+					isOpened?: boolean
 					pictureFK: string
 					pictureMeta: Json
 					title: string
@@ -38,7 +38,7 @@ export interface Database {
 					happenedAt?: string
 					id?: number
 					isLocked?: boolean
-					openedAt?: string | null
+					isOpened?: boolean
 					pictureFK?: string
 					pictureMeta?: Json
 					title?: string

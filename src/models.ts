@@ -1,7 +1,7 @@
 import { type CompartmentTable } from '@/lib/database.types'
 
-type OpenCompartment = { openedAt: string } & Omit<CompartmentTable, 'openedAt'>
-type ClosedCompartment = { openedAt?: null } & Pick<
+type OpenCompartment = { isOpened: true } & Omit<CompartmentTable, 'isOpened'>
+type ClosedCompartment = { isOpened: false } & Pick<
 	CompartmentTable,
 	'id' | 'createdAt' | 'day' | 'isLocked'
 >
