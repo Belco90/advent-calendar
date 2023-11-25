@@ -18,7 +18,10 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 	const [compartment, setCompartment] =
 		useState<Compartment>(initialCompartment)
 	const { isLocked, isOpened } = compartment
+
+	const wasOpened = initialCompartment.isOpened != compartment.isOpened
 	const shouldShowPicture = !isLocked && isOpened
+	const shouldShowCover = !shouldShowPicture || wasOpened
 
 	const handleOpenCompartment = async () => {
 		// TODO: handle loading
@@ -65,12 +68,12 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 				justifyContent="center"
 				height="full"
 				width="full"
-				borderColor="red.200"
+				borderColor={wasOpened ? 'green.200' : 'red.200'}
 				borderStyle="solid"
 				borderWidth="medium"
 				aspectRatio="square"
 			>
-				{!shouldShowPicture && (
+				{shouldShowCover && (
 					<Box fontSize="3xl">
 						{isLocked ? <FaLock /> : <FaQuestionCircle />}
 					</Box>
