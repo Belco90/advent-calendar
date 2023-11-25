@@ -40,6 +40,7 @@ module.exports = {
 			},
 		],
 		'@typescript-eslint/no-explicit-any': 'error',
+		'@typescript-eslint/no-misused-promises': 'off',
 
 		// Import
 		'import/newline-after-import': 'error',
