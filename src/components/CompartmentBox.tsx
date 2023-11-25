@@ -1,32 +1,48 @@
 'use client'
 
 import Image from 'next/image'
-import { type FC } from 'react'
+import { type FC, useState } from 'react'
 import { FaQuestionCircle, FaLock } from 'react-icons/fa'
 
-import { type Compartment } from '@/models'
+import {
+	type Compartment,
+	type OpenCompartmentErrorBody,
+	type OpenCompartmentSuccessBody,
+} from '@/models'
 import { css } from '@/styled-system/css'
 import { panda, Box } from '@/styled-system/jsx'
 
-const CompartmentBox: FC<{ compartment: Compartment }> = ({ compartment }) => {
+const CompartmentBox: FC<{ compartment: Compartment }> = ({
+	compartment: initialCompartment,
+}) => {
+	const [compartment, setCompartment] =
+		useState<Compartment>(initialCompartment)
 	const { isLocked, isOpened } = compartment
 	const shouldShowPicture = !isLocked && isOpened
 
 	const handleOpenCompartment = async () => {
+		// TODO: handle loading
+
 		try {
 			const response = await fetch(`api/compartment/${compartment.id}/open`, {
 				method: 'POST',
 			})
 
 			if (response.ok) {
-				console.log('-----> SUCCESS')
-				// TODO: get updated compartment?
-				// TODO: refresh path?
+				const { compartment: updatedCompartment } =
+					(await response.json()) as OpenCompartmentSuccessBody
+
+				// TODO: assign class for open animation
+				setCompartment(updatedCompartment)
 			} else {
-				throw response
+				const { errorCode } =
+					(await response.json()) as OpenCompartmentErrorBody
+				// TODO: show toast
+				console.log(`Error code: ${errorCode}`)
 			}
 		} catch (error) {
-			console.log('ERROR', error)
+			// TODO: show toast
+			console.log('error:', error)
 		}
 	}
 
@@ -51,7 +67,7 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({ compartment }) => {
 				width="full"
 				borderColor="red.200"
 				borderStyle="solid"
-				borderWidth="2px"
+				borderWidth="medium"
 				aspectRatio="square"
 			>
 				{!shouldShowPicture && (

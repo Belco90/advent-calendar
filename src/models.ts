@@ -7,3 +7,12 @@ type ClosedCompartment = { isOpened: false } & Pick<
 >
 
 export type Compartment = OpenCompartment | ClosedCompartment
+
+export interface OpenCompartmentSuccessBody {
+	compartment: Compartment
+}
+
+export interface OpenCompartmentErrorBody {
+	errorMessage: string
+	errorCode: number
+}

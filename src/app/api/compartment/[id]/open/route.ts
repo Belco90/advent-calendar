@@ -6,7 +6,10 @@ import { type NextRequest, NextResponse } from 'next/server'
 
 import { API_ERRORS } from '@/api-errors'
 import { type CompartmentTable, type Database } from '@/lib/database.types'
-import { type Compartment } from '@/models'
+import {
+	type OpenCompartmentErrorBody,
+	type OpenCompartmentSuccessBody,
+} from '@/models'
 
 function getIsCompartmentDayAllowed(day: number): boolean {
 	const mockDateString = process.env.MOCK_DATE
@@ -24,19 +27,12 @@ function getIsCompartmentDayAllowed(day: number): boolean {
 	return day <= todayDay
 }
 
-type SuccessResponse = NextResponse<{
-	compartment: Compartment
-}>
-
-type ErrorResponse = NextResponse<{
-	errorMessage: string
-	errorCode: number
-}>
-
 export async function POST(
 	request: NextRequest,
 	context: { params: { id: number } },
-): Promise<SuccessResponse | ErrorResponse> {
+): Promise<
+	NextResponse<OpenCompartmentSuccessBody | OpenCompartmentErrorBody>
+> {
 	const { id } = context.params
 	const cookieStore = cookies()
 	const supabase = createRouteHandlerClient<Database>({
