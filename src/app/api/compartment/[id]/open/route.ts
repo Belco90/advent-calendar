@@ -68,6 +68,13 @@ export async function POST(
 		)
 	}
 
+	if (compartment.openedAt) {
+		return NextResponse.json({
+			errorMessage: 'Compartment already open',
+			errorCode: API_ERRORS.COMPARTMENT_ALREADY_OPEN,
+		})
+	}
+
 	if (compartment.isLocked) {
 		return NextResponse.json(
 			{
