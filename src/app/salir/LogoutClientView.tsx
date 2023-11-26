@@ -6,7 +6,7 @@ import { type FC, useEffect } from 'react'
 
 import { type Database } from '@/lib/database.types'
 import { LOGIN_URL } from '@/lib/utils'
-import { Center, Container } from '@/styled-system/jsx'
+import { Center } from '@/styled-system/jsx'
 
 const LogoutClientView: FC = () => {
 	const supabase = createClientComponentClient<Database>()
@@ -26,11 +26,7 @@ const LogoutClientView: FC = () => {
 			})
 	}, [replace, supabase.auth])
 
-	return (
-		<Container maxWidth="breakpoint-md">
-			<Center>Saliendo... 👋</Center>
-		</Container>
-	)
+	return <Center>Saliendo... 👋</Center>
 }
 
 export default LogoutClientView

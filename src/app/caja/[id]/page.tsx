@@ -1,9 +1,11 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
+import Link from 'next/link'
+import { IoArrowBack } from 'react-icons/io5'
 
 import { type Database } from '@/lib/database.types'
 import { type OpenCompartment } from '@/models'
-import { Container } from '@/styled-system/jsx'
+import { Box } from '@/styled-system/jsx'
 
 const getCompartment = async (id: string): Promise<OpenCompartment | null> => {
 	const supabase = createServerComponentClient<Database>({ cookies })
@@ -30,18 +32,24 @@ const CompartmentDetailsPage = async ({
 	const compartment = await getCompartment(compartmentId)
 
 	if (!compartment) {
-		return (
-			<Container maxWidth="breakpoint-md">
-				Esta caja no se puede ver aún.
-			</Container>
-		)
+		return <Box>Esta caja no se puede ver aún.</Box>
 	}
 
 	return (
-		<Container maxWidth="breakpoint-md">
+		<Box>
+			<Link href="/">
+				<Box
+					display="inline-flex"
+					alignItems="center"
+					mb="4"
+					_hover={{ textDecoration: 'underline' }}
+				>
+					<IoArrowBack /> Atrás
+				</Box>
+			</Link>
 			<h2>Caja del día {compartment.day}</h2>
 			<p>{compartment.title}</p>
-		</Container>
+		</Box>
 	)
 }
 

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { type FC } from 'react'
 
 import ToggleUserAuth from '@/components/ToggleUserAuth'
@@ -18,7 +19,11 @@ const Header: FC = () => {
 						fontSize={{ base: 'xl', md: '2xl' }}
 						fontFamily="heading"
 					>
-						<h1>Calendario Adviento 2023</h1>
+						<Link href="/">
+							<panda.h1 _hover={{ textDecoration: 'underline' }}>
+								Calendario Adviento 2023
+							</panda.h1>
+						</Link>
 					</Box>
 
 					<Spacer />

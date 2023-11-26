@@ -7,8 +7,10 @@ import {
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { IoLogInSharp, IoLogOutSharp } from 'react-icons/io5'
 
 import { type Database } from '@/lib/database.types'
+import { Box } from '@/styled-system/jsx'
 
 const ToggleUserAuth = () => {
 	const [isLoading, setIsLoading] = useState(true)
@@ -43,9 +45,11 @@ const ToggleUserAuth = () => {
 	const isAuth = !!user
 
 	return (
-		<Link href={isAuth ? '/salir' : '/acceder'}>
-			{isAuth ? 'Salir' : 'Acceder'}
-		</Link>
+		<Box fontSize="xl">
+			<Link href={isAuth ? '/salir' : '/acceder'}>
+				{isAuth ? <IoLogOutSharp /> : <IoLogInSharp />}
+			</Link>
+		</Box>
 	)
 }
 

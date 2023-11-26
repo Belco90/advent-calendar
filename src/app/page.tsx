@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 import CompartmentBox from '@/components/CompartmentBox'
 import { type Database } from '@/lib/database.types'
 import { type Compartment } from '@/models'
-import { Box, Container, Grid } from '@/styled-system/jsx'
+import { Box, Grid } from '@/styled-system/jsx'
 
 const getCompartments = async (): Promise<Array<Compartment> | null> => {
 	const cookieStore = cookies()
@@ -46,14 +46,14 @@ async function HomePage() {
 	) as Array<Compartment>
 
 	return (
-		<Container py="8" maxWidth="breakpoint-md">
+		<Box py="8">
 			{!!mockDateString && <Box mb="10">Mock date: {mockDateString}</Box>}
 			<Grid columns={3} gap="10">
 				{shuffledCompartments.map((compartment) => (
 					<CompartmentBox key={compartment.id} compartment={compartment} />
 				))}
 			</Grid>
-		</Container>
+		</Box>
 	)
 }
 
