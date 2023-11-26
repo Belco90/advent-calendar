@@ -50,17 +50,7 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 	}
 
 	return (
-		<button
-			type="button"
-			key={compartment.id}
-			onClick={handleOpenCompartment}
-			className={css({
-				'&:nth-child(1n)': { rotate: '-5deg' },
-				'&:nth-child(2n)': { rotate: '12deg' },
-				'&:nth-child(3n)': { rotate: '-8deg' },
-				'&:nth-child(4n)': { rotate: '7deg' },
-			})}
-		>
+		<button type="button" key={compartment.id} onClick={handleOpenCompartment}>
 			<Box
 				display="flex"
 				position="relative"

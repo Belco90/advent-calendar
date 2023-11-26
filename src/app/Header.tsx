@@ -17,9 +17,6 @@ const Header: FC = () => {
 						fontWeight="bold"
 						fontSize={{ base: 'xl', md: '2xl' }}
 						fontFamily="heading"
-						bgSize="100% 0.2em"
-						bgPosition="0 80%"
-						bgRepeat="no-repeat"
 					>
 						<h1>Calendario Adviento 2023</h1>
 					</Box>
