@@ -3,6 +3,7 @@ import { cookies } from 'next/headers'
 import Link from 'next/link'
 import { IoArrowBack } from 'react-icons/io5'
 
+import CompartmentCard from '@/components/CompartmentCard'
 import { type Database } from '@/lib/database.types'
 import { type OpenCompartment } from '@/models'
 import { Box } from '@/styled-system/jsx'
@@ -47,8 +48,7 @@ const CompartmentDetailsPage = async ({
 					<IoArrowBack /> Atrás
 				</Box>
 			</Link>
-			<h2>Caja del día {compartment.day}</h2>
-			<p>{compartment.title}</p>
+			<CompartmentCard compartment={compartment} />
 		</Box>
 	)
 }

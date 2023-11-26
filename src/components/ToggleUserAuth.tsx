@@ -46,7 +46,10 @@ const ToggleUserAuth = () => {
 
 	return (
 		<Box fontSize="xl">
-			<Link href={isAuth ? '/salir' : '/acceder'}>
+			<Link
+				href={isAuth ? '/salir' : '/acceder'}
+				title={isAuth ? 'Cerrar sesión' : 'Iniciar sesión'}
+			>
 				{isAuth ? <IoLogOutSharp /> : <IoLogInSharp />}
 			</Link>
 		</Box>
