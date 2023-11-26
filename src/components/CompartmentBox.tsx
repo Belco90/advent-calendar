@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { type FC, useState } from 'react'
 import { FaQuestionCircle, FaLock } from 'react-icons/fa'
 
+import CompartmentActionWrapper from '@/components/CompartmentActionWrapper'
 import {
 	type Compartment,
 	type OpenCompartmentErrorBody,
@@ -25,7 +26,6 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 
 	const handleOpenCompartment = async () => {
 		// TODO: handle loading
-
 		try {
 			const response = await fetch(`api/compartment/${compartment.id}/open`, {
 				method: 'POST',
@@ -50,7 +50,11 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 	}
 
 	return (
-		<button type="button" key={compartment.id} onClick={handleOpenCompartment}>
+		<CompartmentActionWrapper
+			key={compartment.id}
+			compartment={compartment}
+			onClick={handleOpenCompartment}
+		>
 			<Box
 				display="flex"
 				position="relative"
@@ -88,7 +92,7 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 					</panda.span>
 				</Box>
 			</Box>
-		</button>
+		</CompartmentActionWrapper>
 	)
 }
 
