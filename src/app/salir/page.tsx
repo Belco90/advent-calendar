@@ -1,5 +1,7 @@
+import LogoutClientView from './LogoutClientView'
+
 const LogoutPage = () => {
-	return <div>TODO</div>
+	return <LogoutClientView />
 }
 
 export default LogoutPage
