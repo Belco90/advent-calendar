@@ -1,5 +1,6 @@
 import { defineConfig } from '@pandacss/dev'
 
+import { globalCss } from '@/theme/global-css'
 import { textStyles } from '@/theme/text-styles'
 
 export default defineConfig({
@@ -51,6 +52,7 @@ export default defineConfig({
 			},
 		},
 	},
+	globalCss,
 
 	// The output directory for your css system
 	outdir: 'styled-system',

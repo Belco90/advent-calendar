@@ -3,8 +3,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 import type { Database } from '@/lib/database.types'
-
-const LOGIN_URL = '/acceder' as const
+import { LOGIN_URL } from '@/lib/utils'
 
 /** https://supabase.com/docs/guides/auth/auth-helpers/nextjs?language=ts#managing-session-with-middleware */
 export async function middleware(req: NextRequest) {

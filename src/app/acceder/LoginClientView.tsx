@@ -1,41 +1,54 @@
 'use client'
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { AuthCard, SignIn } from '@supabase/auth-ui-react'
+import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { useRouter } from 'next/navigation'
-import { type FC, useState } from 'react'
+import { type ComponentProps, type FC, useEffect } from 'react'
 
 import type { Database } from '@/lib/database.types'
+import { Center } from '@/styled-system/jsx'
+
+const localizationEs: NonNullable<
+	ComponentProps<typeof SignIn>['localization']
+>['variables'] = {
+	sign_in: {
+		button_label: 'Acceder',
+		email_label: 'Dirección de email',
+		loading_button_label: 'Cargando...',
+		password_label: 'Contraseña',
+		email_input_placeholder: '',
+		password_input_placeholder: '',
+	},
+}
 
 const LoginClientView: FC = () => {
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
 	const router = useRouter()
 	const supabase = createClientComponentClient<Database>()
 
-	const handleSignIn = async () => {
-		await supabase.auth.signInWithPassword({
-			email,
-			password,
+	useEffect(() => {
+		const {
+			data: { subscription },
+		} = supabase.auth.onAuthStateChange((_, session) => {
+			if (session) {
+				router.replace('/')
+			}
 		})
-		router.push('/')
-	}
+
+		return subscription.unsubscribe
+	}, [router, supabase.auth])
 
 	return (
-		<>
-			<input
-				name="email"
-				onChange={(e) => setEmail(e.target.value)}
-				value={email}
-			/>
-			<input
-				type="password"
-				name="password"
-				onChange={(e) => setPassword(e.target.value)}
-				value={password}
-			/>
-			{/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-			<button onClick={handleSignIn}>Sign in</button>
-		</>
+		<Center>
+			<AuthCard>
+				<SignIn
+					supabaseClient={supabase}
+					appearance={{ theme: ThemeSupa }}
+					providers={[]}
+					localization={{ variables: localizationEs }}
+				/>
+			</AuthCard>
+		</Center>
 	)
 }
 
