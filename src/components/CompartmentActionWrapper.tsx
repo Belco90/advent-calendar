@@ -20,6 +20,7 @@ const CompartmentActionWrapper: FC<CompartmentActionWrapperProps> = ({
 			<Link
 				href={`/caja/${compartment.id}`}
 				title={`Ver la caja del día ${compartment.day}`}
+				scroll={false}
 			>
 				{children}
 			</Link>
