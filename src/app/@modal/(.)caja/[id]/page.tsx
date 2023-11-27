@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 
 import CompartmentModalView from './CompartmentModalView'
 
-import CompartmentCard from '@/components/CompartmentCard'
+import CompartmentCard from '@/app/CompartmentCard'
 import { type Database } from '@/lib/database.types'
 import { type OpenCompartment } from '@/models'
 import { Box } from '@/styled-system/jsx'

@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { type FC, useState } from 'react'
 import { FaQuestionCircle, FaLock } from 'react-icons/fa'
 
-import CompartmentActionWrapper from '@/components/CompartmentActionWrapper'
+import CompartmentActionWrapper from '@/app/CompartmentActionWrapper'
 import {
 	type Compartment,
 	type OpenCompartmentErrorBody,

@@ -1,7 +1,7 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 
-import CompartmentBox from '@/components/CompartmentBox'
+import CompartmentBox from '@/app/CompartmentBox'
 import { type Database } from '@/lib/database.types'
 import { type Compartment } from '@/models'
 import { Box, Grid } from '@/styled-system/jsx'

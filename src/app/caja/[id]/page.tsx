@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 import Link from 'next/link'
 import { IoArrowBack } from 'react-icons/io5'
 
-import CompartmentCard from '@/components/CompartmentCard'
+import CompartmentCard from '@/app/CompartmentCard'
 import { type Database } from '@/lib/database.types'
 import { type OpenCompartment } from '@/models'
 import { Box } from '@/styled-system/jsx'
