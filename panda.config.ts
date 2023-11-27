@@ -4,18 +4,13 @@ import { globalCss } from '@/theme/global-css'
 import { textStyles } from '@/theme/text-styles'
 
 export default defineConfig({
-	// Whether to use css reset
 	preflight: true,
-
-	// Where to look for your css declarations
+	presets: ['@pandacss/preset-panda', '@park-ui/panda-preset'],
 	include: [
 		'./src/components/**/*.{js,jsx,ts,tsx}',
 		'./src/app/**/*.{js,jsx,ts,tsx}',
 	],
-
-	// Files to exclude
 	exclude: [],
-
 	strictTokens: true,
 	conditions: {
 		extend: {
@@ -24,8 +19,6 @@ export default defineConfig({
 			light: '.light &',
 		},
 	},
-
-	// Useful for theme customization
 	theme: {
 		extend: {
 			textStyles,
@@ -53,10 +46,7 @@ export default defineConfig({
 		},
 	},
 	globalCss,
-
-	// The output directory for your css system
 	outdir: 'styled-system',
-
 	jsxFramework: 'react',
 	jsxFactory: 'panda',
 })
