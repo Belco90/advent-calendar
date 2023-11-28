@@ -46,9 +46,9 @@ async function HomePage() {
 	) as Array<Compartment>
 
 	return (
-		<Box py="8">
+		<Box>
 			{!!mockDateString && <Box mb="10">Mock date: {mockDateString}</Box>}
-			<Grid columns={3} gap="10">
+			<Grid columns={3} gap="4">
 				{shuffledCompartments.map((compartment) => (
 					<CompartmentBox key={compartment.id} compartment={compartment} />
 				))}

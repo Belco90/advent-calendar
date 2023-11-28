@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { type FC, useState } from 'react'
-import { FaQuestionCircle, FaLock } from 'react-icons/fa'
+import { FaLock } from 'react-icons/fa'
 
 import CompartmentActionWrapper from '@/app/CompartmentActionWrapper'
 import {
@@ -11,7 +11,9 @@ import {
 	type OpenCompartmentSuccessBody,
 } from '@/models'
 import { css } from '@/styled-system/css'
-import { panda, Box } from '@/styled-system/jsx'
+import { Box, panda } from '@/styled-system/jsx'
+
+const LockIcon = panda(FaLock)
 
 const CompartmentBox: FC<{ compartment: Compartment }> = ({
 	compartment: initialCompartment,
@@ -62,14 +64,28 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 				justifyContent="center"
 				height="full"
 				width="full"
-				borderColor={wasOpened ? 'green.200' : 'red.200'}
-				borderStyle="solid"
-				borderWidth="medium"
+				borderColor="green.700"
+				borderStyle={isOpened ? 'none' : 'dashed'}
+				borderWidth={isOpened ? 'thin' : 'medium'}
+				borderRadius="2xl"
+				shadow="sm"
 				aspectRatio="square"
 			>
 				{shouldShowCover && (
-					<Box fontSize="3xl">
-						{isLocked ? <FaLock /> : <FaQuestionCircle />}
+					<Box
+						fontSize={{ base: 'xl', md: '3xl' }}
+						fontWeight="bold"
+						color="green.700"
+					>
+						<Box>{compartment.day}</Box>
+						{isLocked && (
+							<LockIcon
+								fontSize="2xl"
+								position="absolute"
+								right="1.5"
+								bottom="1.5"
+							/>
+						)}
 					</Box>
 				)}
 				{shouldShowPicture && (
@@ -77,20 +93,9 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 						src={compartment.pictureFK}
 						alt=""
 						fill
-						className={css({ objectFit: 'cover' })}
+						className={css({ objectFit: 'cover', borderRadius: '2xl' })}
 					/>
 				)}
-				<Box position="absolute" bottom="0" right="1">
-					<panda.span
-						fontSize={{ base: 'xl', md: '3xl' }}
-						fontWeight="bold"
-						color="green.500"
-						textStyle="box-number"
-						shadowColor="blue.500"
-					>
-						{compartment.day}
-					</panda.span>
-				</Box>
 			</Box>
 		</CompartmentActionWrapper>
 	)
