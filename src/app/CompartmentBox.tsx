@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { type FC, useState } from 'react'
 import { FaLock } from 'react-icons/fa'
 
@@ -36,7 +37,6 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 				const { compartment: updatedCompartment } =
 					(await response.json()) as OpenCompartmentSuccessBody
 
-				// TODO: assign class for open animation
 				setCompartment(updatedCompartment)
 			} else {
 				const { errorCode } =
@@ -51,56 +51,55 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 	}
 
 	return (
-		<button
-			key={compartment.id}
-			// compartment={compartment}
-			onClick={handleOpenCompartment}
+		<Box
+			display="flex"
+			alignItems="center"
+			justifyContent="center"
+			height="full"
+			width="full"
+			borderRadius="2xl"
+			shadow="sm"
+			aspectRatio="square"
+			transformStyle="preserve-3d"
+			perspective="1000px"
 		>
 			<Box
-				display="flex"
-				alignItems="center"
-				justifyContent="center"
-				height="full"
 				width="full"
-				borderColor="green.700"
-				borderStyle={isOpened ? 'none' : 'dashed'}
-				borderWidth={isOpened ? 'thin' : 'medium'}
-				borderRadius="2xl"
-				shadow="sm"
-				aspectRatio="square"
+				height="full"
 				transformStyle="preserve-3d"
-				// @ts-expect-error Pending to be moved to semantic token
 				perspective="1000px"
+				position="relative"
 			>
-				<Box
-					// .door
-					width="full"
-					height="full"
-					transformStyle="preserve-3d"
-					transitionProperty="all"
-					transitionDuration="slowest"
-					position="relative"
-					transitionDelay="slower"
-					// @ts-expect-error Pending to be moved to semantic token
-					transform={wasOpened ? 'rotateY(180deg)' : 'none'}
-				>
-					{shouldShowCover && (
-						<Box
-							// .door .front
-							fontSize={{ base: 'xl', md: '3xl' }}
-							fontWeight="bold"
-							color="green.700"
-							bgColor="green.200"
-							borderRadius="2xl"
+				{shouldShowCover && (
+					<Box
+						fontSize={{ base: 'xl', md: '3xl' }}
+						fontWeight="bold"
+						color="green.700"
+						bgColor="green.200"
+						borderRadius="2xl"
+						borderColor="green.700"
+						borderStyle="dashed"
+						borderWidth="medium"
+						width="full"
+						height="full"
+						display="flex"
+						position="relative"
+						zIndex="overlay"
+						alignItems="center"
+						justifyContent="center"
+						backfaceVisibility="hidden"
+						transformStyle="preserve-3d"
+						transitionProperty="all"
+						transitionDuration="slowest"
+						visibility={wasOpened ? 'hidden' : 'initial'}
+						opacity={wasOpened ? '0' : '1'}
+						transition="visibility 0s 2s, opacity 2s ease-out"
+					>
+						<panda.button
+							type="button"
+							onClick={handleOpenCompartment}
 							width="full"
 							height="full"
-							display="flex"
-							alignItems="center"
-							justifyContent="center"
-							transformStyle="preserve-3d"
-							transitionProperty="all"
-							transitionDuration="slow"
-							backfaceVisibility="hidden"
 						>
 							<Box>{compartment.day}</Box>
 							{isLocked && (
@@ -111,11 +110,16 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 									bottom="1.5"
 								/>
 							)}
-						</Box>
-					)}
-					{shouldShowPicture && (
+						</panda.button>
+					</Box>
+				)}
+				{shouldShowPicture && (
+					<Link
+						href={`/caja/${compartment.id}`}
+						title={`Ver la caja del día ${compartment.day}`}
+						scroll={false}
+					>
 						<Image
-							// .door .back
 							src={compartment.pictureFK}
 							alt=""
 							fill
@@ -123,14 +127,12 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 								objectFit: 'cover',
 								borderRadius: '2xl',
 								backfaceVisibility: 'hidden',
-								// @ts-expect-error Pending to be moved to semantic token
-								transform: wasOpened ? 'rotateY(180deg)' : 'none',
 							})}
 						/>
-					)}
-				</Box>
+					</Link>
+				)}
 			</Box>
-		</button>
+		</Box>
 	)
 }
 

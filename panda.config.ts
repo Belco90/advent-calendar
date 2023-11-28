@@ -11,7 +11,6 @@ export default defineConfig({
 		'./src/app/**/*.{js,jsx,ts,tsx}',
 	],
 	exclude: [],
-	strictTokens: true,
 	conditions: {
 		extend: {
 			// Enable dark theme
