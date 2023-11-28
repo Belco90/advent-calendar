@@ -48,7 +48,7 @@ async function HomePage() {
 	return (
 		<Box>
 			{!!mockDateString && <Box mb="10">Mock date: {mockDateString}</Box>}
-			<Grid columns={3} gap="4">
+			<Grid columns={3} gap={{ base: '4', md: '20' }}>
 				{shuffledCompartments.map((compartment) => (
 					<CompartmentBox key={compartment.id} compartment={compartment} />
 				))}
