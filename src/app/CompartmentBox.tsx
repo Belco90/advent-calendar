@@ -4,7 +4,6 @@ import Image from 'next/image'
 import { type FC, useState } from 'react'
 import { FaLock } from 'react-icons/fa'
 
-import CompartmentActionWrapper from '@/app/CompartmentActionWrapper'
 import {
 	type Compartment,
 	type OpenCompartmentErrorBody,
@@ -52,14 +51,13 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 	}
 
 	return (
-		<CompartmentActionWrapper
+		<button
 			key={compartment.id}
-			compartment={compartment}
+			// compartment={compartment}
 			onClick={handleOpenCompartment}
 		>
 			<Box
 				display="flex"
-				position="relative"
 				alignItems="center"
 				justifyContent="center"
 				height="full"
@@ -70,34 +68,69 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 				borderRadius="2xl"
 				shadow="sm"
 				aspectRatio="square"
+				transformStyle="preserve-3d"
+				// @ts-expect-error Pending to be moved to semantic token
+				perspective="1000px"
 			>
-				{shouldShowCover && (
-					<Box
-						fontSize={{ base: 'xl', md: '3xl' }}
-						fontWeight="bold"
-						color="green.700"
-					>
-						<Box>{compartment.day}</Box>
-						{isLocked && (
-							<LockIcon
-								fontSize="2xl"
-								position="absolute"
-								right="1.5"
-								bottom="1.5"
-							/>
-						)}
-					</Box>
-				)}
-				{shouldShowPicture && (
-					<Image
-						src={compartment.pictureFK}
-						alt=""
-						fill
-						className={css({ objectFit: 'cover', borderRadius: '2xl' })}
-					/>
-				)}
+				<Box
+					// .door
+					width="full"
+					height="full"
+					transformStyle="preserve-3d"
+					transitionProperty="all"
+					transitionDuration="slowest"
+					position="relative"
+					transitionDelay="slower"
+					// @ts-expect-error Pending to be moved to semantic token
+					transform={wasOpened ? 'rotateY(180deg)' : 'none'}
+				>
+					{shouldShowCover && (
+						<Box
+							// .door .front
+							fontSize={{ base: 'xl', md: '3xl' }}
+							fontWeight="bold"
+							color="green.700"
+							bgColor="green.200"
+							borderRadius="2xl"
+							width="full"
+							height="full"
+							display="flex"
+							alignItems="center"
+							justifyContent="center"
+							transformStyle="preserve-3d"
+							transitionProperty="all"
+							transitionDuration="slow"
+							backfaceVisibility="hidden"
+						>
+							<Box>{compartment.day}</Box>
+							{isLocked && (
+								<LockIcon
+									fontSize="2xl"
+									position="absolute"
+									right="1.5"
+									bottom="1.5"
+								/>
+							)}
+						</Box>
+					)}
+					{shouldShowPicture && (
+						<Image
+							// .door .back
+							src={compartment.pictureFK}
+							alt=""
+							fill
+							className={css({
+								objectFit: 'cover',
+								borderRadius: '2xl',
+								backfaceVisibility: 'hidden',
+								// @ts-expect-error Pending to be moved to semantic token
+								transform: wasOpened ? 'rotateY(180deg)' : 'none',
+							})}
+						/>
+					)}
+				</Box>
 			</Box>
-		</CompartmentActionWrapper>
+		</button>
 	)
 }
 
