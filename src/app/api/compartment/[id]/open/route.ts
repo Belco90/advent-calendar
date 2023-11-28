@@ -24,6 +24,10 @@ function getIsCompartmentDayAllowed(day: number): boolean {
 	}
 	const todayDay = getDate(today)
 
+	if (mockDateString) {
+		MockDate.reset()
+	}
+
 	return day <= todayDay
 }
 
