@@ -17,7 +17,7 @@ const RootLayout: FC<{ children: ReactNode; modal: ReactNode }> = ({
 	modal,
 }) => (
 	<html lang="en" className={`${inter.variable}`} suppressHydrationWarning>
-		<body>
+		<body suppressHydrationWarning>
 			<LayoutUI>{children}</LayoutUI>
 			{modal}
 		</body>
