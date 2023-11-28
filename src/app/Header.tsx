@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { type FC } from 'react'
 
-import ToggleUserAuth from '@/components/ToggleUserAuth'
+import LogoutButton from '@/components/LogoutButton'
 import { Box, Container, Flex, panda, Spacer } from '@/styled-system/jsx'
 
 const Header: FC = () => {
@@ -29,7 +29,7 @@ const Header: FC = () => {
 					<Spacer />
 
 					<Box>
-						<ToggleUserAuth />
+						<LogoutButton />
 					</Box>
 				</Flex>
 			</Container>
