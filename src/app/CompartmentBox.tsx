@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { type FC, useState } from 'react'
 import { FaLock } from 'react-icons/fa'
 
+import { getIsCompartmentDayAllowed } from '@/lib/utils'
 import {
 	type Compartment,
 	type OpenCompartmentErrorBody,
@@ -25,6 +26,8 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 	const wasOpened = initialCompartment.isOpened != compartment.isOpened
 	const shouldShowPicture = !isLocked && isOpened
 	const shouldShowCover = !shouldShowPicture || wasOpened
+	const isCompartmentDayAllowed = getIsCompartmentDayAllowed(compartment.day)
+	const canBeOpen = isCompartmentDayAllowed && !isOpened && !isLocked
 
 	const handleOpenCompartment = async () => {
 		// TODO: handle loading
@@ -60,8 +63,7 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 			borderRadius="2xl"
 			shadow="sm"
 			aspectRatio="square"
-			transformStyle="preserve-3d"
-			perspective="1000px"
+			animation={canBeOpen ? 'tilt-shaking' : undefined}
 		>
 			<Box
 				width="full"

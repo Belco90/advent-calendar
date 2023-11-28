@@ -39,7 +39,7 @@ async function HomePage() {
 		return <div>No data!</div>
 	}
 
-	const mockDateString = process.env.MOCK_DATE
+	const mockDateString = process.env.NEXT_PUBLIC_MOCK_DATE
 
 	const shuffledCompartments = SHUFFLED_COMPARTMENTS_DAYS.map((shuffledDay) =>
 		compartments.find(({ day }) => shuffledDay === day),

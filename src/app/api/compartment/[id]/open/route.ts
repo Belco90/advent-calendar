@@ -1,35 +1,14 @@
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { getDate, getMonth } from 'date-fns'
-import MockDate from 'mockdate'
 import { cookies } from 'next/headers'
 import { type NextRequest, NextResponse } from 'next/server'
 
 import { API_ERRORS } from '@/api-errors'
 import { type CompartmentTable, type Database } from '@/lib/database.types'
+import { getIsCompartmentDayAllowed } from '@/lib/utils'
 import {
 	type OpenCompartmentErrorBody,
 	type OpenCompartmentSuccessBody,
 } from '@/models'
-
-function getIsCompartmentDayAllowed(day: number): boolean {
-	const mockDateString = process.env.MOCK_DATE
-	if (mockDateString) {
-		MockDate.set(mockDateString)
-	}
-	const today = new Date()
-
-	// Months are 0-index based, so 11 is December.
-	if (getMonth(today) !== 11) {
-		return false
-	}
-	const todayDay = getDate(today)
-
-	if (mockDateString) {
-		MockDate.reset()
-	}
-
-	return day <= todayDay
-}
 
 export async function POST(
 	request: NextRequest,

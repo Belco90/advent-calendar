@@ -21,6 +21,15 @@ export default defineConfig({
 	theme: {
 		extend: {
 			textStyles,
+			keyframes: {
+				'tilt-shaking': {
+					'0%': { transform: 'rotate(0deg)' },
+					'25%': { transform: 'rotate(5deg)' },
+					'50%': { transform: 'rotate(0deg)' },
+					'75%': { transform: 'rotate(-5deg)' },
+					'100%': { transform: 'rotate(0deg)' },
+				},
+			},
 			tokens: {
 				fonts: {
 					heading: { value: 'var(--font-inter)' },
@@ -40,6 +49,9 @@ export default defineConfig({
 					skipLink: { value: 1600 },
 					toast: { value: 1700 },
 					tooltip: { value: 1800 },
+				},
+				animations: {
+					'tilt-shaking': { value: 'tilt-shaking 0.75s linear infinite' },
 				},
 			},
 		},
