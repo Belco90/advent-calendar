@@ -5,7 +5,9 @@ import Link from 'next/link'
 import { type FC, useState } from 'react'
 import { FaLock } from 'react-icons/fa'
 
+import { API_ERRORS } from '@/api-errors'
 import FullscreenBackdrop from '@/components/FullscreenBackdrop'
+import { toast } from '@/components/Toaster'
 import { getIsCompartmentDayAllowed } from '@/lib/utils'
 import {
 	type Compartment,
@@ -15,7 +17,21 @@ import {
 import { css } from '@/styled-system/css'
 import { Box, panda } from '@/styled-system/jsx'
 
+const DEFAULT_ERROR_MESSAGE =
+	'Algo salió mal 😞. Informa al administrador de esta web.'
+
 const LockIcon = panda(FaLock)
+
+function getErrorDisplay(code: number, compartment: Compartment) {
+	const { day } = compartment
+	const errorMessagesMap: Record<number, string> = {
+		[API_ERRORS.COMPARTMENT_ALREADY_OPEN]: `La caja del día ${day} ya está abierta 🔑.`,
+		[API_ERRORS.COMPARTMENT_DAY_NOT_ALLOWED]: `La caja del día ${day} todavía no puede abrirse 🗓️.`,
+		[API_ERRORS.COMPARTMENT_LOCKED]: `La caja del día ${day} está bloqueada 🔒.`,
+		[API_ERRORS.COMPARTMENT_NOT_FOUND]: `La caja del día ${day} no existe 🔎.`,
+	}
+	return errorMessagesMap[code] || DEFAULT_ERROR_MESSAGE
+}
 
 const CompartmentBox: FC<{ compartment: Compartment }> = ({
 	compartment: initialCompartment,
@@ -46,12 +62,18 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 			} else {
 				const { errorCode } =
 					(await response.json()) as OpenCompartmentErrorBody
-				// TODO: show toast
-				console.log(`Error code: ${errorCode}`)
+				toast.create({
+					title: 'Error',
+					description: getErrorDisplay(errorCode, compartment),
+					type: 'error',
+				})
 			}
 		} catch (error) {
-			// TODO: show toast
-			console.log('error:', error)
+			toast.create({
+				title: 'Error',
+				description: DEFAULT_ERROR_MESSAGE,
+				type: 'error',
+			})
 		} finally {
 			setIsLoading(false)
 		}
