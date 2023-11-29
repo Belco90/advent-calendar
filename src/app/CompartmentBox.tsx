@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { type FC, useState } from 'react'
 import { FaLock } from 'react-icons/fa'
 
+import FullscreenBackdrop from '@/components/FullscreenBackdrop'
 import { getIsCompartmentDayAllowed } from '@/lib/utils'
 import {
 	type Compartment,
@@ -21,8 +22,9 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 }) => {
 	const [compartment, setCompartment] =
 		useState<Compartment>(initialCompartment)
-	const { isLocked, isOpened } = compartment
+	const [isLoading, setIsLoading] = useState(false)
 
+	const { isLocked, isOpened } = compartment
 	const wasOpened = initialCompartment.isOpened != compartment.isOpened
 	const shouldShowPicture = !isLocked && isOpened
 	const shouldShowCover = !shouldShowPicture || wasOpened
@@ -30,7 +32,7 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 	const canBeOpen = isCompartmentDayAllowed && !isOpened && !isLocked
 
 	const handleOpenCompartment = async () => {
-		// TODO: handle loading
+		setIsLoading(true)
 		try {
 			const response = await fetch(`api/compartment/${compartment.id}/open`, {
 				method: 'POST',
@@ -50,6 +52,8 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 		} catch (error) {
 			// TODO: show toast
 			console.log('error:', error)
+		} finally {
+			setIsLoading(false)
 		}
 	}
 
@@ -65,6 +69,7 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 			aspectRatio="square"
 			animation={canBeOpen ? 'tilt-shaking' : undefined}
 		>
+			{isLoading && <FullscreenBackdrop />}
 			<Box
 				width="full"
 				height="full"
@@ -89,10 +94,6 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 						zIndex="overlay"
 						alignItems="center"
 						justifyContent="center"
-						backfaceVisibility="hidden"
-						transformStyle="preserve-3d"
-						transitionProperty="all"
-						transitionDuration="slowest"
 						visibility={wasOpened ? 'hidden' : 'initial'}
 						opacity={wasOpened ? '0' : '1'}
 						transition="visibility 0s 2s, opacity 2s ease-out"
@@ -128,7 +129,6 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 							className={css({
 								objectFit: 'cover',
 								borderRadius: '2xl',
-								backfaceVisibility: 'hidden',
 							})}
 						/>
 					</Link>
