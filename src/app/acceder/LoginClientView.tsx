@@ -27,15 +27,15 @@ const LoginClientView: FC = () => {
 	const supabase = createClientComponentClient<Database>()
 
 	useEffect(() => {
-		const {
-			data: { subscription },
-		} = supabase.auth.onAuthStateChange((_, session) => {
+		const { data } = supabase.auth.onAuthStateChange((_, session) => {
 			if (session) {
-				router.replace('/')
+				router.push('/')
 			}
 		})
 
-		return subscription.unsubscribe
+		return () => {
+			data.subscription.unsubscribe()
+		}
 	}, [router, supabase.auth])
 
 	return (
