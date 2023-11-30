@@ -1,5 +1,8 @@
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { getDate, getMonth } from 'date-fns'
 import MockDate from 'mockdate'
+
+import { type Database } from '@/lib/database.types'
 
 export const LOGIN_URL = '/acceder' as const
 
@@ -21,4 +24,10 @@ export function getIsCompartmentDayAllowed(day: number): boolean {
 	}
 
 	return day <= todayDay
+}
+
+export function getPicturePublicUrl(filePath: string): string {
+	const supabase = createClientComponentClient<Database>()
+	const { data } = supabase.storage.from('picture').getPublicUrl(filePath)
+	return data.publicUrl
 }

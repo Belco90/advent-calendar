@@ -9,7 +9,7 @@ import { FaLock } from 'react-icons/fa'
 import { API_ERRORS } from '@/api-errors'
 import FullscreenBackdrop from '@/components/FullscreenBackdrop'
 import { toast } from '@/components/Toaster'
-import { getIsCompartmentDayAllowed } from '@/lib/utils'
+import { getIsCompartmentDayAllowed, getPicturePublicUrl } from '@/lib/utils'
 import {
 	type Compartment,
 	type OpenCompartmentErrorBody,
@@ -168,7 +168,7 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 						scroll={false}
 					>
 						<Image
-							src={compartment.pictureFK}
+							src={getPicturePublicUrl(compartment.pictureFK)}
 							alt=""
 							fill
 							className={css({
