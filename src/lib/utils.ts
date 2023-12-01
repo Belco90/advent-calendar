@@ -27,6 +27,10 @@ export function getIsCompartmentDayAllowed(day: number): boolean {
 }
 
 export function getPicturePublicUrl(filePath: string): string {
+	if (process.env.NEXT_PUBLIC_SUPABASE_URL?.includes('127.0.0.1')) {
+		return filePath
+	}
+
 	const supabase = createClientComponentClient<Database>()
 	const { data } = supabase.storage.from('picture').getPublicUrl(filePath)
 	return data.publicUrl
