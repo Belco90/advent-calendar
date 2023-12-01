@@ -47,7 +47,7 @@ function showConfetti(
 		initialVelocityX: 0.8,
 		initialVelocityY: 6,
 		confettiSource: {
-			x: elementOffset.left + elementOffset.width / 4,
+			x: elementOffset.left,
 			y: elementOffset.top + elementOffset.height / 2,
 			w: elementOffset.width,
 			h: elementOffset.height,

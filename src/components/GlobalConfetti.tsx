@@ -34,12 +34,7 @@ const Confetti: FC<ConfettiProps> = () => {
 		)
 	}
 
-	const finalWidth = width ? width - 20 : 0
-	const finalHeight = height ? height - 20 : 0
-
-	return (
-		<ReactConfetti width={finalWidth} height={finalHeight} {...confettiProps} />
-	)
+	return <ReactConfetti width={width} height={height} {...confettiProps} />
 }
 
 const GlobalConfetti: FC<{ children: ReactNode }> = ({ children }) => {
