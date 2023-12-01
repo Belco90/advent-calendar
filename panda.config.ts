@@ -34,6 +34,7 @@ export default defineConfig({
 				fonts: {
 					heading: { value: 'var(--font-inter)' },
 					body: { value: 'var(--font-inter)' },
+					hand: { value: 'var(--font-dancing-script)' },
 				},
 				zIndex: {
 					hide: { value: -1 },

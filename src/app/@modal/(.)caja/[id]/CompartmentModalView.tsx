@@ -6,12 +6,14 @@ import { type FC, type ReactNode } from 'react'
 import { IoClose } from 'react-icons/io5'
 
 import { Dialog } from '@/components/Dialog'
-import { Stack } from '@/styled-system/jsx'
+import { panda, Stack } from '@/styled-system/jsx'
+
+const CloseIcon = panda(IoClose)
 
 const CompartmentModalView: FC<{ children: ReactNode }> = ({ children }) => {
 	const router = useRouter()
 	const handleExit = () => {
-		router.back()
+		router.replace('/', { scroll: false })
 	}
 
 	return (
@@ -34,7 +36,7 @@ const CompartmentModalView: FC<{ children: ReactNode }> = ({ children }) => {
 								right="2"
 							>
 								<button aria-label="Close Dialog">
-									<IoClose />
+									<CloseIcon fontSize="2xl" />
 								</button>
 							</Dialog.CloseTrigger>
 						</Stack>
