@@ -1,11 +1,12 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 
+import { CompartmentsGrid, IntroMessage } from './CommonComponents'
+
 import CompartmentBox from '@/app/CompartmentBox'
-import { Text } from '@/components/Text'
 import { type Database } from '@/lib/database.types'
 import { type Compartment } from '@/models'
-import { Box, Grid } from '@/styled-system/jsx'
+import { Box } from '@/styled-system/jsx'
 
 const getCompartments = async (): Promise<Array<Compartment> | null> => {
 	const cookieStore = cookies()
@@ -48,14 +49,12 @@ async function HomePage() {
 
 	return (
 		<Box>
-			<Text mb="4" fontWeight="medium">
-				¡Hola! Este es tu Calendario de Adviento 2023.
-			</Text>
-			<Grid columns={3} gap={{ base: '4', md: '20' }}>
+			<IntroMessage />
+			<CompartmentsGrid>
 				{shuffledCompartments.map((compartment) => (
 					<CompartmentBox key={compartment.id} compartment={compartment} />
 				))}
-			</Grid>
+			</CompartmentsGrid>
 			{!!mockDateString && <Box mt="10">Mock date: {mockDateString}</Box>}
 		</Box>
 	)
