@@ -5,6 +5,7 @@ import { type FC, type ReactNode } from 'react'
 
 import LayoutUI from './LayoutUI'
 
+import { GlobalConfetti } from '@/components/GlobalConfetti'
 import { Toaster } from '@/components/Toaster'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
@@ -20,7 +21,9 @@ const RootLayout: FC<{ children: ReactNode; modal: ReactNode }> = ({
 }) => (
 	<html lang="en" className={`${inter.variable}`} suppressHydrationWarning>
 		<body suppressHydrationWarning>
-			<LayoutUI>{children}</LayoutUI>
+			<GlobalConfetti>
+				<LayoutUI>{children}</LayoutUI>
+			</GlobalConfetti>
 			<Toaster />
 			{modal}
 		</body>

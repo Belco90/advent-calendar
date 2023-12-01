@@ -2,13 +2,14 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { type FC, type RefObject, useRef, useState } from 'react'
-import ReactConfetti from 'react-confetti'
+import { type FC, useState } from 'react'
 import { FaLock } from 'react-icons/fa'
 
 import { API_ERRORS } from '@/api-errors'
 import FullscreenBackdrop from '@/components/FullscreenBackdrop'
+import { useGlobalConfetti } from '@/components/GlobalConfetti'
 import { toast } from '@/components/Toaster'
+import { useElementOffset } from '@/hooks/useElementOffset'
 import { getIsCompartmentDayAllowed, getPicturePublicUrl } from '@/lib/utils'
 import {
 	type Compartment,
@@ -34,15 +35,24 @@ function getErrorDisplay(code: number, compartment: Compartment) {
 	return errorMessagesMap[code] || DEFAULT_ERROR_MESSAGE
 }
 
-function getPosition(boxRef: RefObject<HTMLDivElement>): {
-	x: number | undefined
-	y: number | undefined
-} {
-	const x = boxRef.current?.offsetLeft
-	const y = boxRef.current?.offsetTop
-
-	console.log('position:', { x, y })
-	return { x, y }
+function showConfetti(
+	setter: ReturnType<typeof useGlobalConfetti>,
+	elementOffset: ReturnType<typeof useElementOffset>[1],
+) {
+	setter({
+		friction: 1,
+		recycle: false,
+		run: true,
+		numberOfPieces: 200,
+		initialVelocityX: 0.8,
+		initialVelocityY: 6,
+		confettiSource: {
+			x: elementOffset.left + elementOffset.width / 4,
+			y: elementOffset.top + elementOffset.height / 2,
+			w: elementOffset.width,
+			h: elementOffset.height,
+		},
+	})
 }
 
 const CompartmentBox: FC<{ compartment: Compartment }> = ({
@@ -51,7 +61,8 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 	const [compartment, setCompartment] =
 		useState<Compartment>(initialCompartment)
 	const [isLoading, setIsLoading] = useState(false)
-	const boxRef = useRef<HTMLDivElement>(null)
+	const [boxRef, elementOffset] = useElementOffset()
+	const confetti = useGlobalConfetti()
 
 	const { isLocked, isOpened } = compartment
 	const wasOpened = initialCompartment.isOpened != compartment.isOpened
@@ -71,6 +82,7 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 				const { compartment: updatedCompartment } =
 					(await response.json()) as OpenCompartmentSuccessBody
 
+				showConfetti(confetti, elementOffset)
 				setCompartment(updatedCompartment)
 			} else {
 				const { errorCode } =
@@ -91,8 +103,6 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 			setIsLoading(false)
 		}
 	}
-
-	const boxPosition = getPosition(boxRef)
 
 	return (
 		<Box
@@ -115,13 +125,6 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 				perspective="1000px"
 				position="relative"
 			>
-				<ReactConfetti
-					{...boxPosition}
-					height={100}
-					width={100}
-					recycle={false}
-					numberOfPieces={wasOpened ? 500 : 0}
-				/>
 				{shouldShowCover && (
 					<Box
 						fontSize={{ base: 'xl', md: '3xl' }}
