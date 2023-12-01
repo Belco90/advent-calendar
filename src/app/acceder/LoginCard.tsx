@@ -37,7 +37,7 @@ const LoginCard: FC = () => {
 					type: 'error',
 				})
 			}
-			router.push('/')
+			router.refresh()
 		} catch (err) {
 			setIsLoading(false)
 			toast.create({
