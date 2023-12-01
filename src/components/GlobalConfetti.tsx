@@ -1,92 +1,74 @@
 'use client'
 
-import dynamic from 'next/dynamic'
 import {
+	type ComponentProps,
 	createContext,
 	type FC,
 	type ReactNode,
 	useContext,
-	useEffect,
 	useState,
 } from 'react'
-import { type Props } from 'react-confetti'
+import ReactConfetti, { type Props } from 'react-confetti'
 
 import { useHtmlSize } from '@/hooks/useHtmlSize'
-import { usePrevious } from '@/hooks/usePrevious'
 
-const ReactConfetti = dynamic(() => import('react-confetti'), {
-	ssr: false,
-})
-
+type ConfettiInstance = Parameters<
+	NonNullable<ComponentProps<typeof ReactConfetti>['onConfettiComplete']>
+>[0]
 type ConfettiProps = Omit<Props, 'width' | 'height' | 'run'>
 type ConfettiSetter = (props: ConfettiProps) => void
 
-const ConfettiValueContext = createContext<ConfettiProps | undefined>(undefined)
-const ConfettiSetterContext = createContext<ConfettiSetter | undefined>(
+interface TConfettiSetterContext {
+	setProps: ConfettiSetter
+	setShouldRun: (newValue: boolean) => void
+}
+
+interface TConfettiValueContext {
+	props: ConfettiProps | undefined
+	shouldRun: boolean
+}
+
+const ConfettiValueContext = createContext<TConfettiValueContext | undefined>(
+	undefined,
+)
+const ConfettiSetterContext = createContext<TConfettiSetterContext | undefined>(
 	undefined,
 )
 
-const areEqualObjects = (a: unknown, b: unknown): boolean => {
-	if (a === b) return true
-
-	if (typeof a != 'object' || typeof b != 'object' || a == null || b == null)
-		return false
-
-	const keysA = Object.keys(a),
-		keysB = Object.keys(b)
-
-	if (keysA.length != keysB.length) return false
-
-	for (const key of keysA) {
-		if (!keysB.includes(key)) return false
-
-		// @ts-expect-error Not needed to type
-		if (typeof a[key] === 'function' || typeof b[key] === 'function') {
-			// @ts-expect-error Not needed to type
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-			if (a[key].toString() != b[key].toString()) return false
-		} else {
-			// @ts-expect-error Not needed to type
-			if (!areEqualObjects(a[key], b[key])) return false
-		}
-	}
-
-	return true
-}
-
 const Confetti: FC<ConfettiProps> = () => {
 	const { width, height } = useHtmlSize()
-	const confettiProps = useContext(ConfettiValueContext)
-	const [shouldRun, setShouldRun] = useState(false)
-	const previousConfettiProps = usePrevious(confettiProps)
+	const valueContext = useContext(ConfettiValueContext)
+	const setterContext = useContext(ConfettiSetterContext)
 
-	useEffect(() => {
-		if (
-			!confettiProps ||
-			areEqualObjects(confettiProps, previousConfettiProps)
-		) {
-			return
-		}
+	if (!valueContext || !setterContext) {
+		throw new Error(
+			'The Confetti component must be wrapped within ConfettiValueContext',
+		)
+	}
 
-		setShouldRun(true)
-	}, [confettiProps, previousConfettiProps])
+	const { props: confettiProps, shouldRun } = valueContext
+	const { setShouldRun } = setterContext
 
-	const { onConfettiComplete, ...props } = confettiProps ?? {}
+	const {
+		onConfettiComplete,
+		numberOfPieces = 0,
+		...props
+	} = confettiProps ?? {}
 
-	const handleConfettiComplete = () => {
+	const handleConfettiComplete = (confetti: ConfettiInstance) => {
+		confetti?.reset()
 		setShouldRun(false)
 		onConfettiComplete?.()
 	}
 
-	if (!shouldRun) {
-		return null
-	}
+	const finalNumberOfPieces = shouldRun ? numberOfPieces : 0
 
 	return (
 		<ReactConfetti
 			run
 			width={width}
 			height={height}
+			numberOfPieces={finalNumberOfPieces}
 			onConfettiComplete={handleConfettiComplete}
 			{...props}
 		/>
@@ -97,10 +79,15 @@ const GlobalConfetti: FC<{ children: ReactNode }> = ({ children }) => {
 	const [confettiProps, setConfettiProps] = useState<ConfettiProps | undefined>(
 		undefined,
 	)
+	const [shouldRun, setShouldRun] = useState(false)
 
 	return (
-		<ConfettiSetterContext.Provider value={setConfettiProps}>
-			<ConfettiValueContext.Provider value={confettiProps}>
+		<ConfettiSetterContext.Provider
+			value={{ setProps: setConfettiProps, setShouldRun }}
+		>
+			<ConfettiValueContext.Provider
+				value={{ props: confettiProps, shouldRun }}
+			>
 				<Confetti />
 				{children}
 			</ConfettiValueContext.Provider>
@@ -109,15 +96,20 @@ const GlobalConfetti: FC<{ children: ReactNode }> = ({ children }) => {
 }
 
 function useGlobalConfetti(): ConfettiSetter {
-	const setter = useContext(ConfettiSetterContext)
+	const context = useContext(ConfettiSetterContext)
 
-	if (!setter) {
+	if (!context) {
 		throw new Error(
 			'The useGlobalConfetti hook must be wrapped within ConfettiSetterContext',
 		)
 	}
 
-	return setter
+	const { setProps, setShouldRun } = context
+
+	return (props: ConfettiProps) => {
+		setProps(props)
+		setShouldRun(true)
+	}
 }
 
 export { GlobalConfetti, useGlobalConfetti }
