@@ -1,9 +1,9 @@
 import { type FC } from 'react'
 
-import LoginClientView from './LoginClientView'
+import LoginCard from './LoginCard'
 
 const LoginPage: FC = () => {
-	return <LoginClientView />
+	return <LoginCard />
 }
 
 export default LoginPage
