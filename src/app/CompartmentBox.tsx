@@ -42,7 +42,6 @@ function showConfetti(
 	setter({
 		friction: 1,
 		recycle: false,
-		run: true,
 		numberOfPieces: 200,
 		initialVelocityX: 0.8,
 		initialVelocityY: 6,
