@@ -48,7 +48,7 @@ const LoginCard: FC = () => {
 		}
 	}
 	return (
-		<Card.Root width="sm">
+		<Card.Root>
 			<Card.Header>
 				<Card.Title>Iniciar sesión</Card.Title>
 			</Card.Header>
