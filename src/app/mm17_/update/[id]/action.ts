@@ -12,8 +12,7 @@ export async function updateCompartment(
 	formData: FormData,
 ) {
 	const supabase = createServerActionClient<Database>({ cookies })
-	const isLockedFormValue = formData.get('isLocked')
-	const isLocked = !!isLockedFormValue
+	const isLocked = !!formData.get('isLocked')
 
 	const { error } = await supabase
 		.from('compartment')

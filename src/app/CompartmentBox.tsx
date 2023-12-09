@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { type FC, useState } from 'react'
-import { FaLock } from 'react-icons/fa'
+import { FaLock, FaQuestion } from 'react-icons/fa'
 
 import { API_ERRORS } from '@/api-errors'
 import FullscreenBackdrop from '@/components/FullscreenBackdrop'
@@ -54,6 +54,8 @@ function showConfetti(
 	})
 }
 
+const QuestionIcon = panda(FaQuestion)
+
 const CompartmentBox: FC<{ compartment: Compartment }> = ({
 	compartment: initialCompartment,
 }) => {
@@ -69,6 +71,7 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 	const shouldShowCover = !shouldShowPicture || wasOpened
 	const isCompartmentDayAllowed = getIsCompartmentDayAllowed(compartment.day)
 	const canBeOpen = isCompartmentDayAllowed && !isOpened && !isLocked
+	const isSpecial = isOpened && compartment.pictureFK.startsWith('special')
 
 	const handleOpenCompartment = async () => {
 		setIsLoading(true)
@@ -169,15 +172,30 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 						title={`Ver la caja del día ${compartment.day}`}
 						scroll={false}
 					>
-						<Image
-							src={getPicturePublicUrl(compartment.pictureFK)}
-							alt=""
-							fill
-							className={css({
-								objectFit: 'cover',
-								borderRadius: '2xl',
-							})}
-						/>
+						{isSpecial ? (
+							<Box
+								bgColor="green.dark.10"
+								color="tomato.a9"
+								height="full"
+								width="full"
+								rounded="2xl"
+								display="flex"
+								alignItems="center"
+								justifyContent="center"
+							>
+								<QuestionIcon fontSize="4xl" />
+							</Box>
+						) : (
+							<Image
+								src={getPicturePublicUrl(compartment.pictureFK)}
+								alt=""
+								fill
+								className={css({
+									objectFit: 'cover',
+									borderRadius: '2xl',
+								})}
+							/>
+						)}
 					</Link>
 				)}
 			</Box>
