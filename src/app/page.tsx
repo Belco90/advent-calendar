@@ -1,17 +1,18 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
+import Link from 'next/link'
 
 import { CompartmentsGrid, IntroMessage } from './CommonComponents'
 
 import CompartmentBox from '@/app/CompartmentBox'
 import { type Database } from '@/lib/database.types'
+import { getIsAdminUser } from '@/lib/supabase-server'
 import { type Compartment } from '@/models'
 import { Box } from '@/styled-system/jsx'
 
 const getCompartments = async (): Promise<Array<Compartment> | null> => {
-	const cookieStore = cookies()
 	const supabase = createServerComponentClient<Database>({
-		cookies: () => cookieStore,
+		cookies,
 	})
 	const { data } = await supabase.from('compartment').select()
 
@@ -35,13 +36,21 @@ const SHUFFLED_COMPARTMENTS_DAYS = [
 ] as const
 
 async function HomePage() {
-	const compartments = await getCompartments()
+	const supabase = createServerComponentClient({ cookies })
+	const userPromise = supabase.auth.getUser()
+	const compartmentsPromise = getCompartments()
 
-	if (!compartments) {
+	const [{ data }, compartments] = await Promise.all([
+		userPromise,
+		compartmentsPromise,
+	])
+
+	if (!compartments || !data.user) {
 		return <div>No data!</div>
 	}
 
 	const mockDateString = process.env.NEXT_PUBLIC_MOCK_DATE
+	const isAdminUser = getIsAdminUser(data.user)
 
 	const shuffledCompartments = SHUFFLED_COMPARTMENTS_DAYS.map((shuffledDay) =>
 		compartments.find(({ day }) => shuffledDay === day),
@@ -49,6 +58,11 @@ async function HomePage() {
 
 	return (
 		<Box>
+			{isAdminUser && (
+				<Box mb="4" textDecoration="underline">
+					<Link href="/mm17_">Admin</Link>
+				</Box>
+			)}
 			<IntroMessage />
 			<CompartmentsGrid>
 				{shuffledCompartments.map((compartment) => (
