@@ -68,7 +68,7 @@ const CompartmentBox: FC<{ compartment: Compartment }> = ({
 	const { isLocked, isOpened } = compartment
 	const wasOpened = initialCompartment.isOpened != compartment.isOpened
 	const shouldShowPicture = !isLocked && isOpened
-	const shouldShowCover = !shouldShowPicture || wasOpened
+	const shouldShowCover = !shouldShowPicture && !wasOpened
 	const isCompartmentDayAllowed = getIsCompartmentDayAllowed(compartment.day)
 	const canBeOpen = isCompartmentDayAllowed && !isOpened && !isLocked
 	const isSpecial = isOpened && compartment.pictureFK.startsWith('special')
