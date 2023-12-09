@@ -5,9 +5,12 @@ import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { type Database } from '@/lib/database.types'
+import { type CompartmentTable, type Database } from '@/lib/database.types'
 
-export async function updateCompartment(id: string, formData: FormData) {
+export async function updateCompartment(
+	id: CompartmentTable['id'],
+	formData: FormData,
+) {
 	const supabase = createServerActionClient<Database>({ cookies })
 	const isLockedFormValue = formData.get('isLocked')
 	const isLocked = !!isLockedFormValue
