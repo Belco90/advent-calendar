@@ -9,6 +9,7 @@ import { type CompartmentTable, type Database } from '@/lib/database.types'
 
 export async function updateCompartment(
 	id: CompartmentTable['id'],
+	_: unknown,
 	formData: FormData,
 ) {
 	const supabase = createServerActionClient<Database>({ cookies })
@@ -20,7 +21,7 @@ export async function updateCompartment(
 		.eq('id', id)
 
 	if (error) {
-		throw error
+		return { errorMessage: error.message }
 	}
 
 	revalidatePath('/mm17_')
