@@ -25,7 +25,7 @@
 		"@supabase/auth-helpers-nextjs": "^0.8.7",
 		"@supabase/supabase-js": "^2.39.0",
 		"date-fns": "^2.30.0",
-		"next": "14.0.3",
+		"next": "14.0.4",
 		"react": "^18.2.0",
 		"react-confetti": "^6.1.0",
 		"react-dom": "^18.2.0",
@@ -33,7 +33,7 @@
 		"server-only": "^0.0.1"
 	},
 	"devDependencies": {
-		"@pandacss/dev": "^0.20.1",
+		"@pandacss/dev": "^0.21.0",
 		"@park-ui/panda-preset": "^0.25.0",
 		"@types/node": "^18.18.9",
 		"@types/react": "^18.2.42",
@@ -41,15 +41,15 @@
 		"@typescript-eslint/eslint-plugin": "^6.13.2",
 		"@typescript-eslint/parser": "^6.13.2",
 		"eslint": "^8.55.0",
-		"eslint-config-next": "14.0.3",
+		"eslint-config-next": "14.0.4",
 		"eslint-config-prettier": "^9.1.0",
 		"husky": "^8.0.3",
 		"is-ci": "^3.0.1",
 		"lint-staged": "^15.2.0",
 		"mockdate": "^3.0.5",
 		"prettier": "3.1.0",
-		"supabase": "^1.115.4",
+		"supabase": "^1.115.5",
 		"type-fest": "^4.8.3",
-		"typescript": "^5.3.2"
+		"typescript": "^5.3.3"
 	}
 }
