@@ -1,15 +1,16 @@
 'use client'
 
-import { type FC } from 'react'
+import { type FC, useEffect } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 
 import { updateCompartment } from './action'
 
 import { Button } from '@/components/Button'
 import * as Checkbox from '@/components/Checkbox'
+import { toast } from '@/components/Toaster'
 import { type CompartmentTable } from '@/lib/database.types'
 import { css } from '@/styled-system/css'
-import { Box, VStack } from '@/styled-system/jsx'
+import { VStack } from '@/styled-system/jsx'
 
 const FormContent: FC<{ compartment: CompartmentTable }> = ({
 	compartment,
@@ -25,6 +26,14 @@ const FormContent: FC<{ compartment: CompartmentTable }> = ({
 			>
 				<Checkbox.Control />
 				<Checkbox.Label>Locked</Checkbox.Label>
+			</Checkbox.Root>
+			<Checkbox.Root
+				colorPalette="green"
+				defaultChecked={compartment.isOpened}
+				name="isOpened"
+			>
+				<Checkbox.Control />
+				<Checkbox.Label>Open</Checkbox.Label>
 			</Checkbox.Root>
 			<Button w="full" isLoading={pending}>
 				Submit
@@ -48,14 +57,15 @@ const UpdateCompartmentForm: FC<{ compartment: CompartmentTable }> = ({
 
 	const { errorMessage } = formState
 
+	useEffect(() => {
+		if (errorMessage) {
+			toast.error({ title: 'Error', description: errorMessage })
+		}
+	}, [errorMessage])
+
 	return (
 		<form action={formAction} className={css({ w: 'full' })}>
 			<FormContent compartment={compartment} />
-			{!!errorMessage && (
-				<Box mt="2" color="red.dark.8" fontWeight="bold">
-					Error: {errorMessage}
-				</Box>
-			)}
 		</form>
 	)
 }

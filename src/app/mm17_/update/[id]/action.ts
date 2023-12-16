@@ -7,17 +7,25 @@ import { redirect } from 'next/navigation'
 
 import { type CompartmentTable, type Database } from '@/lib/database.types'
 
+function getCheckboxValue(
+	formData: FormData,
+	fieldName: keyof CompartmentTable,
+): boolean {
+	return !!formData.get(fieldName)
+}
+
 export async function updateCompartment(
 	id: CompartmentTable['id'],
 	_: unknown,
 	formData: FormData,
 ) {
 	const supabase = createServerActionClient<Database>({ cookies })
-	const isLocked = !!formData.get('isLocked')
+	const isLocked = getCheckboxValue(formData, 'isLocked')
+	const isOpened = getCheckboxValue(formData, 'isOpened')
 
 	const { error } = await supabase
 		.from('compartment')
-		.update({ isLocked })
+		.update({ isLocked, isOpened })
 		.eq('id', id)
 
 	if (error) {
